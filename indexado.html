@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lanchonete Sabor & Sorrisos</title>
+  <style>
+    /* ====== Reset & Variáveis ====== */
+    :root{
+      --bg:#0f172a;          /* azul bem escuro */
+      --card:#111827;        /* cinza azulado */
+      --text:#e5e7eb;        /* cinza claro */
+      --muted:#9ca3af;       /* cinza médio */
+      --brand:#10b981;       /* verde água */
+      --brand-2:#22d3ee;     /* ciano */
+      --danger:#ef4444;      /* vermelho */
+      --shadow: 0 10px 25px rgba(0,0,0,.25);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+    img{max-width:100%;display:block;border-radius:12px}
+    a{color:inherit;text-decoration:none}
+    button{cursor:pointer;border:none}
+
+    /* ====== Layout ====== */
+    .container{max-width:1100px;margin-inline:auto;padding:24px}
+    header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(15,23,42,.7));backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.4px}
+    .logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;font-weight:900;color:#06251f;}
+    .nav a{opacity:.9}
+    .nav a:hover{opacity:1}
+    .nav-links{display:flex;gap:18px;font-weight:600}
+    .cart-btn{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#072019;padding:10px 14px;border-radius:14px;font-weight:800;box-shadow:var(--shadow)}
+
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;padding:28px 0}
+    .hero-card{background:radial-gradient(1200px 600px at 20% -20%,rgba(34,211,238,.15),transparent), linear-gradient(180deg,#0b1224,#0f172a);border:1px solid rgba(255,255,255,.06);padding:26px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero h1{font-size:clamp(26px,4vw,46px);line-height:1.1;margin-bottom:12px}
+    .hero p{color:var(--muted);max-width:65ch}
+    .hero .actions{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:12px 16px;border-radius:14px;font-weight:700}
+    .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#061b17}
+    .btn-ghost{border:1px solid rgba(255,255,255,.12);color:var(--text)}
+
+    /* ====== Seções ====== */
+    .section{padding:32px 0}
+    .section h2{font-size:clamp(22px,3vw,32px);margin-bottom:16px}
+    .muted{color:var(--muted)}
+
+    /* ====== Grid de produtos ====== */
+    .grid{display:grid;gap:18px;grid-template-columns:repeat( auto-fit, minmax(220px,1fr) );}
+    .card{background:linear-gradient(180deg,#0b1224,#0f172a);border:1px solid rgba(255,255,255,.06);padding:14px;border-radius:16px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .card h3{margin:10px 0 4px;font-size:18px}
+    .card p{color:var(--muted);font-size:14px}
+    .price-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+    .price{font-weight:800}
+    .add{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#082018;padding:8px 12px;border-radius:12px;font-weight:800}
+
+    /* ====== Carrinho lateral ====== */
+    .drawer{position:fixed;right:16px;bottom:16px;width:min(380px,94vw);background:linear-gradient(180deg,#0b1224,#0f172a);border:1px solid rgba(255,255,255,.08);border-radius:20px;box-shadow:var(--shadow);padding:16px;max-height:70vh;overflow:auto}
+    .drawer h3{font-size:18px;margin-bottom:10px}
+    .cart-list{display:flex;flex-direction:column;gap:10px}
+    .item{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;background:rgba(255,255,255,.03);padding:10px;border-radius:12px}
+    .qty{display:flex;align-items:center;gap:8px}
+    .qty button{width:28px;height:28px;border-radius:10px;background:#0d1428;color:#cbd5e1;border:1px solid rgba(255,255,255,.12)}
+    .total{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px dashed rgba(255,255,255,.12);font-weight:800}
+    .checkout{margin-top:12px;width:100%}
+
+    /* ====== Sobre & Contacto ====== */
+    .about,.contact{background:linear-gradient(180deg,#0b1224,#0f172a);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    form{display:grid;gap:12px}
+    input,textarea{background:#0b1224;border:1px solid rgba(255,255,255,.12);padding:12px;border-radius:12px;color:var(--text)}
+    textarea{min-height:90px;resize:vertical}
+
+    footer{padding:24px 0;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,.06)}
+
+    /* ====== Responsivo ====== */
+    @media (max-width: 820px){
+      .hero{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- ====== Header / Navegação ====== -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">🍔</div>
+        <span>Lanchonete <span style="background:linear-gradient(135deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent">Sabor & Sorrisos</span></span>
+      </div>
+      <nav class="nav-links">
+        <a href="#menu">Cardápio</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contacto">Contacto</a>
+        <button class="cart-btn" id="openCart" type="button">🧺 Ver Pedido</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====== Hero ====== -->
+  <section class="container hero">
+    <div class="hero-card">
+      <h1>Sabores que dão sorrisos, todos os dias 😋</h1>
+      <p>Sanduíches artesanais, sumos naturais e snacks fresquinhos. Faz o teu pedido e passa para levantar — simples, rápido e delicioso!</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#menu">Ver Cardápio</a>
+        <a class="btn btn-ghost" href="#contacto">Falar com a gente</a>
+      </div>
+    </div>
+    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1600&auto=format&fit=crop" alt="Hambúrguer suculento" />
+  </section>
+
+  <!-- ====== Cardápio ====== -->
+  <section id="menu" class="container section">
+    <h2>Cardápio</h2>
+    <p class="muted" style="margin-bottom:14px">Clica em <strong>Adicionar</strong> para montar o teu pedido.</p>
+
+    <div class="grid" id="menuGrid">
+      <!-- Os itens são injetados por JavaScript abaixo para facilitar edição -->
+    </div>
+  </section>
+
+  <!-- ====== Sobre ====== -->
+  <section id="sobre" class="container section">
+    <div class="about">
+      <h2>Sobre nós</h2>
+      <p class="muted" style="margin-top:8px">Somos apaixonados por comida simples e bem feita. Usamos ingredientes frescos, pão artesanal e molhos da casa. Aberto de <strong>Seg a Sáb, 09h–20h</strong>.</p>
+    </div>
+  </section>
+
+  <!-- ====== Contacto ====== -->
+  <section id="contacto" class="container section">
+    <div class="contact">
+      <h2>Fale com a gente</h2>
+      <p class="muted" style="margin:6px 0 14px">Reserva de mesa, dúvidas ou encomendas para eventos.</p>
+      <form id="contactForm" onsubmit="event.preventDefault(); alert('Obrigado! Recebemos a sua mensagem.'); this.reset();">
+        <input type="text" name="nome" placeholder="Seu nome" required>
+        <input type="tel" name="telefone" placeholder="Telefone / WhatsApp" required>
+        <textarea name="mensagem" placeholder="Sua mensagem"></textarea>
+        <button type="submit" class="btn btn-primary">Enviar mensagem</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> Lanchonete Sabor & Sorrisos — Manjacaze. Feito com 💚 em HTML, CSS e JS.
+    </div>
+  </footer>
+
+  <!-- ====== Carrinho/Pedido ====== -->
+  <aside class="drawer" id="cart" style="display:none">
+    <h3>🧺 Meu Pedido</h3>
+    <div class="cart-list" id="cartList"></div>
+    <div class="total"><span>Total</span><span id="cartTotal">0 MT</span></div>
+    <button class="btn btn-primary checkout" onclick="finalizarPedido()">Finalizar pedido (WhatsApp)</button>
+    <button class="btn btn-ghost checkout" onclick="toggleCart(false)">Fechar</button>
+  </aside>
+
+  <script>
+    // =================== Dados do cardápio ===================
+    const MENU = [
+      { id:1, nome:"Hambúrguer Clássico", preco: 180, desc:"Pão brioche, carne 120g, queijo, alface, tomate e molho da casa.", img:"https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1200&auto=format&fit=crop" },
+      { id:2, nome:"X-Salada", preco: 220, desc:"Carne 150g, queijo duplo, salada crocante e maionese especial.", img:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1200&auto=format&fit=crop" },
+      { id:3, nome:"Frango Grelhado", preco: 200, desc:"Peito de frango temperado na brasa com ervas.", img:"https://images.unsplash.com/photo-1604908554007-0924f3c38b81?q=80&w=1200&auto=format&fit=crop" },
+      { id:4, nome:"Batata Frita", preco: 90, desc:"Porção crocante de 300g.", img:"https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?q=80&w=1200&auto=format&fit=crop" },
+      { id:5, nome:"Sumo Natural de Manga", preco: 70, desc:"100% fruta, sem açúcar adicionado.", img:"https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=1200&auto=format&fit=crop" },
+      { id:6, nome:"Milkshake Chocolate", preco: 120, desc:"Cremoso com calda artesanal.", img:"https://images.unsplash.com/photo-1544145945-f90425340c7e?q=80&w=1200&auto=format&fit=crop" },
+    ];
+
+    // =================== Renderização do cardápio ===================
+    const grid = document.getElementById('menuGrid');
+    function mt(v){ return `${v.toLocaleString('pt-MZ')} MT`; }
+
+    MENU.forEach(item=>{
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${item.img}" alt="${item.nome}">
+        <h3>${item.nome}</h3>
+        <p>${item.desc}</p>
+        <div class="price-row">
+          <span class="price">${mt(item.preco)}</span>
+          <button class="add" data-id="${item.id}">Adicionar</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // =================== Lógica do carrinho ===================
+    const cart = new Map();
+
+    function addToCart(id){
+      const item = MENU.find(x=>x.id===id);
+      const current = cart.get(id) || { ...item, qty:0 };
+      current.qty += 1;
+      cart.set(id, current);
+      renderCart();
+      toggleCart(true);
+    }
+
+    function inc(id){ cart.get(id).qty++; renderCart(); }
+    function dec(id){
+      const cur = cart.get(id);
+      cur.qty--; if(cur.qty<=0) cart.delete(id);
+      renderCart();
+    }
+
+    function renderCart(){
+      const list = document.getElementById('cartList');
+      list.innerHTML = '';
+      let total = 0;
+      cart.forEach(({id,nome,preco,qty})=>{
+        total += preco*qty;
+        const row = document.createElement('div');
+        row.className = 'item';
+        row.innerHTML = `
+          <div><strong>${nome}</strong><div class="muted">${mt(preco)} x ${qty}</div></div>
+          <div class="muted">${mt(preco*qty)}</div>
+          <div class="qty">
+            <button onclick="dec(${id})">–</button>
+            <button onclick="inc(${id})">+</button>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+      document.getElementById('cartTotal').textContent = mt(total);
+    }
+
+    function toggleCart(show){
+      document.getElementById('cart').style.display = show ? 'block' : 'none';
+    }
+    document.getElementById('openCart').addEventListener('click', ()=>toggleCart(true));
+
+    document.addEventListener('click', (e)=>{
+      if(e.target.matches('.add')){
+        addToCart(Number(e.target.dataset.id));
+      }
+    });
+
+    function finalizarPedido(){
+      if(cart.size===0){ alert('Seu carrinho está vazio. Adicione itens do cardápio.'); return; }
+      let msg = '*Pedido – Lanchonete Sabor & Sorrisos*%0A%0A';
+      let total = 0;
+      cart.forEach(({nome,preco,qty})=>{
+        total += preco*qty;
+        msg += `• ${nome} – ${qty} x ${mt(preco)}%0A`;
+      });
+      msg += `%0A*Total:* ${mt(total)}%0A%0AEndereço para retirar?`;
+      const phone = '258875681743'; // <- Substituir pelo WhatsApp da lanchonete
+      const url = `https://wa.me/${phone}?text=${msg}`;
+      window.open(url, '_blank');
+    }
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <!--
+    ================== COMO EDITAR (para alunos) ==================
+    1) Preços e itens: edite o array MENU no <script> (nome, preco, desc, img).
+    2) WhatsApp: troque a constante phone por um número válido (código do país + número).
+    3) Cores/tema: altere variáveis em :root (no <style>) para personalizar a marca.
+    4) Nome/horário: edite os textos no header, hero e seção "Sobre nós".
+    5) Publicar: envie este arquivo para qualquer hospedagem estática ou abra direto no navegador.
+  -->
+</body>
+</html>
